@@ -1,8 +1,10 @@
-let randomNumber = function(size) {
+let currQuestion;
+
+let randomNumber = function (size) {
     return Math.ceil(Math.random() * size);
 }
 
-let problemSet = function() {
+let problemSet = function () {
     let question = {};
     let num1 = randomNumber(10);
     let num2 = randomNumber(10);
@@ -13,8 +15,21 @@ let problemSet = function() {
     return question;
 }
 
-console.log(problemSet());
-console.log(problemSet());
+let newQuestion = function () {
+    currQuestion = problemSet();
+    $('#equation').text(currQuestion.equation);
+}
 
-curr = problemSet();
-$('#equation').text(curr.equation);
+let checkAnswer = function (userAnswer, answer) {
+    if (userAnswer === answer) {
+        newQuestion();
+        $('#answer').val('')
+    }
+}
+
+document.addEventListener('input', function () {
+    let answer = parseInt(document.getElementById("answer").value);
+    checkAnswer(answer, currQuestion.answer);
+})
+
+newQuestion();
