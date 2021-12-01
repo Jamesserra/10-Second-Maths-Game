@@ -5,7 +5,6 @@ $(document).ready(function () {
     let currQuestion;
     let downloadTimer;
     let points = document.getElementById("points");
-    // let times = document.getElementById("countdown");
 
     let randomNumber = function (size) {
         return Math.ceil(Math.random() * size);
@@ -24,8 +23,29 @@ $(document).ready(function () {
 
         let num1 = randomNumber(rangeslider.value);
         let num2 = randomNumber(rangeslider.value);
+
         question.answer = num1 + num2;
         question.equation = String(num1) + ' + ' + String(num2);
+
+        if (document.getElementById("plus").checked) {
+            question.answer = num1 + num2;
+            question.equation = String(num1) + " + " + String(num2);
+        }
+
+        if (document.getElementById("minus").checked) {
+            question.answer = num1 - num2;
+            question.equation = String(num1) + " - " + String(num2);
+        }
+
+        if (document.getElementById("times").checked) {
+            question.answer = num1 * num2;
+            question.equation = String(num1) + " * " + String(num2);
+        }
+
+        if (document.getElementById("divide").checked) {
+            question.answer = num1 / num2;
+            question.equation = String(num1) + " / " + String(num2);
+        }
         return question;
     }
 
