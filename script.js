@@ -1,10 +1,11 @@
 $(document).ready(function () {
     let timeleft = 10;
     let count = 0;
+    let highscore = 0;
     let currQuestion;
     let downloadTimer;
     let points = document.getElementById("points");
-    let times = document.getElementById("countdown");
+    // let times = document.getElementById("countdown");
 
     let randomNumber = function (size) {
         return Math.ceil(Math.random() * size);
@@ -12,8 +13,17 @@ $(document).ready(function () {
 
     let problemSet = function () {
         let question = {};
-        let num1 = randomNumber(10);
-        let num2 = randomNumber(10);
+
+        let rangeslider = document.getElementById("sliderRange");
+        let output = document.getElementById("output");
+        output.innerHTML = rangeslider.value;
+
+        rangeslider.oninput = function () {
+            output.innerHTML = this.value;
+        }
+
+        let num1 = randomNumber(rangeslider.value);
+        let num2 = randomNumber(rangeslider.value);
         question.answer = num1 + num2;
         question.equation = String(num1) + ' + ' + String(num2);
         return question;
@@ -26,7 +36,14 @@ $(document).ready(function () {
 
     let updateScore = function (score) {
         count += score;
-        points = document.getElementById("points").innerHTML = count;
+        points.innerHTML = count;
+    }
+
+    let updateHighScore = function (score) {
+        if (score > highscore) {
+            highscore = score;
+            $('#highscore').text(highscore);
+        }
     }
 
     let button = document.getElementById("reset")
@@ -35,6 +52,7 @@ $(document).ready(function () {
             if (timeleft === 0) {
                 answer.disabled = false;
                 updateTime(10);
+                updateHighScore(count);
                 updateScore(-count);
             }
         }
@@ -73,6 +91,5 @@ $(document).ready(function () {
         let answer = parseInt(document.getElementById("answer").value);
         checkAnswer(answer, currQuestion.answer);
     });
-
     newQuestion();
 });

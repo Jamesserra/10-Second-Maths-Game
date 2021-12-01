@@ -22,7 +22,12 @@
         <h2>10 Sec Maths Game</h2>
         <h1 id="equation"></h1>
         <input id="answer" />
+        <div class="rangeslider">
+          <input id="sliderRange" type="range" min="10" max="50" step="5" ng-model="numberLimit">
+          <p>Value: <span id="output"></span></p>
+        </div>
         <p>Score: <span id="points">0</span></p>
+        <p>HighScore: <span id="highscore">0</span></p>
         <button id="reset">Reset</button>
         <script src="script.js"></script>
 </body>
