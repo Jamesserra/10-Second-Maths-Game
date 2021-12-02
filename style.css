@@ -3,11 +3,20 @@
   box-sizing: border-box;
 }
 
+
 body {
   font-family: 'Muli', sans-serif;
-  display: block;
+  background: url(/bg.jpg) no-repeat center;
 }
 
 .container {
   text-align: center;
+}
+
+h1 {
+  padding: 20px;
+}
+
+.choiceBar {
+  padding: 20px;
 }
