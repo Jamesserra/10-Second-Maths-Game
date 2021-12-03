@@ -5,6 +5,7 @@ $(document).ready(function () {
     let currQuestion;
     let downloadTimer;
     let points = document.getElementById("points");
+    let operators = [];
 
     let randomNumber = function (size) {
         return Math.ceil(Math.random() * size);
@@ -23,31 +24,26 @@ $(document).ready(function () {
 
         let num1 = randomNumber(rangeslider.value);
         let num2 = randomNumber(rangeslider.value);
+        let operator = operators[Math.floor(Math.random() * operators.length)];
 
-        question.answer = num1 + num2;
-        question.equation = String(num1) + ' + ' + String(num2);
+        let getEquation = function (op) {
+            switch (op) {
+                case '+': question.answer = num1 + num2; return question.equation = String(num1) + " + " + String(num2); break;
+                case '-': question.answer = num1 - num2; return question.equation = String(num1) + " - " + String(num2); break;
+                case '*': question.answer = num1 * num2; return question.equation = String(num1) + " * " + String(num2); break;
+                case '/': question.answer = num1 / num2; return question.equation = String(num1) + " / " + String(num2); break;
+            }
+        }
 
-        if (document.getElementById("plus").checked) {
+        question.equation = getEquation(operator);
+
+        if (operators.length === 0) {
             question.answer = num1 + num2;
-            question.equation = String(num1) + " + " + String(num2);
-        }
-
-        if (document.getElementById("minus").checked) {
-            question.answer = num1 - num2;
-            question.equation = String(num1) + " - " + String(num2);
-        }
-
-        if (document.getElementById("times").checked) {
-            question.answer = num1 * num2;
-            question.equation = String(num1) + " * " + String(num2);
-        }
-
-        if (document.getElementById("divide").checked) {
-            question.answer = num1 / num2;
-            question.equation = String(num1) + " / " + String(num2);
+            question.equation = String(num1) + ' + ' + String(num2);
         }
         return question;
     }
+
 
     let updateTime = function (time) {
         timeleft += time;
@@ -111,5 +107,22 @@ $(document).ready(function () {
         let answer = parseInt(document.getElementById("answer").value);
         checkAnswer(answer, currQuestion.answer);
     });
+
+    Array.prototype.remove = function (value) {
+        this.splice(this.indexOf(value), 1);
+    }
+
+    $('.largerCheckbox').change(function () {
+        if ($(this).is(":checked")) {
+            $(this).addClass('active');
+            if (operators.includes(this.value) === false) operators.push(this.value);
+            // console.log(operators)
+        } else {
+            $(this).removeClass('active');
+            if (operators.includes(this.value) === true) operators.remove(this.value);
+            // console.log(operators)
+        }
+    });
+
     newQuestion();
 });
