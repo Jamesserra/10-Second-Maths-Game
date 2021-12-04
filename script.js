@@ -6,6 +6,7 @@ $(document).ready(function () {
     let downloadTimer;
     let points = document.getElementById("points");
     let operators = [];
+    $('.largerCheckbox').prop("checked", false);
 
     let randomNumber = function (size) {
         return Math.ceil(Math.random() * size);
@@ -24,17 +25,22 @@ $(document).ready(function () {
 
         let num1 = randomNumber(rangeslider.value);
         let num2 = randomNumber(rangeslider.value);
+        let num3 = num1 * num2;
         let operator = operators[Math.floor(Math.random() * operators.length)];
 
         let getEquation = function (op) {
             switch (op) {
                 case '+': question.answer = num1 + num2; return question.equation = String(num1) + " + " + String(num2); break;
-                case '-': question.answer = num1 - num2; return question.equation = String(num1) + " - " + String(num2); break;
+                case '-': switch(true) { 
+                    case (num1 > num2):
+                        question.answer = num1 - num2; return question.equation = String(num1) + " - " + String(num2); break;
+                    case (num1 < num2):
+                        question.answer = num2 - num1; return question.equation = String(num2) + " - " + String(num1); break;
+                }
                 case '*': question.answer = num1 * num2; return question.equation = String(num1) + " * " + String(num2); break;
-                case '/': question.answer = num1 / num2; return question.equation = String(num1) + " / " + String(num2); break;
+                case '/': question.answer = num3 / num1; return question.equation = String(num3) + " / " + String(num1); break;
             }
         }
-
         question.equation = getEquation(operator);
 
         if (operators.length === 0) {
@@ -43,7 +49,6 @@ $(document).ready(function () {
         }
         return question;
     }
-
 
     let updateTime = function (time) {
         timeleft += time;
@@ -67,6 +72,7 @@ $(document).ready(function () {
         if (!downloadTimer) {
             if (timeleft === 0) {
                 answer.disabled = false;
+                $('.largerCheckbox').prop("checked", false);
                 updateTime(10);
                 updateHighScore(count);
                 updateScore(-count);
@@ -116,11 +122,9 @@ $(document).ready(function () {
         if ($(this).is(":checked")) {
             $(this).addClass('active');
             if (operators.includes(this.value) === false) operators.push(this.value);
-            // console.log(operators)
         } else {
             $(this).removeClass('active');
             if (operators.includes(this.value) === true) operators.remove(this.value);
-            // console.log(operators)
         }
     });
 
